@@ -1,0 +1,6 @@
+*~
+*.exe
+html/
+latex/
+*.a
+obj/
