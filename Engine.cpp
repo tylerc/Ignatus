@@ -5,15 +5,11 @@ Engine* E;
 
 GameObject::GameObject(std::string file, int x, int y, bool collides)
 {
-    if (!Image.LoadFromFile(file))
-    {
-        std::cout << "Couldn't load image " << file << std::endl;
-        exit(1);
-    }
-    Image.SetSmooth(false);
-    Sprite = new sf::Sprite(Image);
-    this->width = Image.GetWidth();
-    this->height = Image.GetHeight();
+    Image = _E.LoadImage(file);
+    Image->SetSmooth(false);
+    Sprite = new sf::Sprite(*Image);
+    this->width = Image->GetWidth();
+    this->height = Image->GetHeight();
     this->x = x;
     this->y = y;
     this->name = "GameObject";
@@ -31,6 +27,7 @@ GameObject::GameObject(bool collides)
     x = 0;
     y = 0;
     Sprite = NULL;
+    Image = NULL;
     _E.CS->Add(this);
     Collides = collides;
     if (collides)
@@ -43,6 +40,10 @@ GameObject::~GameObject()
     if (Sprite != NULL)
     {
         delete Sprite;
+    }
+    if (Image != NULL)
+    {
+        //delete Image;
     }
 }
 
@@ -150,13 +151,9 @@ void Text::Draw(sf::RenderWindow* App)
 
 AniObject::AniObject(std::string file, int width, int height, int frame_rate, bool endOnEnd) : GameObject(true)
 {
-    if (!Image.LoadFromFile(file))
-    {
-        std::cout << "Couldn't load image " << file << std::endl;
-        exit(1);
-    }
-    Image.SetSmooth(false);
-    AS = new AniSprite(Image, width, height, frame_rate, endOnEnd);
+    Image = _E.LoadImage(file);
+    Image->SetSmooth(false);
+    AS = new AniSprite(*Image, width, height, frame_rate, endOnEnd);
     Sprite = AS;
     this->width = width;
     this->height = height;
@@ -497,6 +494,24 @@ void Engine::Looptastic()
         CS->Update();
     }
 }
+
+sf::Image* Engine::LoadImage(std::string file)
+{
+    if (Images[file] == NULL)
+    {
+        sf::Image* image = new sf::Image;
+        if (!image->LoadFromFile(file))
+        {
+            std::cout << "Couldn't load image " << file << std::endl;
+            exit(1);
+        }
+        Images[file] = image;
+        return image;
+    } else {
+        return Images[file];
+    }
+}
+
 Engine::~Engine()
 {
     App->Close();

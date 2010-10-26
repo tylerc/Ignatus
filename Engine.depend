@@ -1,21 +1,8 @@
 # depslib dependency file v1.0
-1287792188 source:/media/2982-00BC/Projects/Engine/Particles.cpp
-	"Engine.hpp"
-
-1287897235 /media/2982-00BC/Projects/Engine/Engine.hpp
-	<Engine/util.hpp>
-	<Engine/Engine.hpp>
-	<SFML/System.hpp>
-	<SFML/Graphics.hpp>
-	<SFML/Audio.hpp>
-	<boost/function.hpp>
-	<boost/bind.hpp>
-	<iostream>
-	<string>
-	<vector>
+1288109344 source:/media/2982-00BC/Projects/Engine/AniSprite.cpp
 	"AniSprite.hpp"
 
-1287892391 /media/2982-00BC/Projects/Engine/AniSprite.hpp
+1288109344 /media/2982-00BC/Projects/Engine/AniSprite.hpp
 	<SFML/System.hpp>
 	<SFML/Graphics.hpp>
 
@@ -28,4 +15,18 @@
 	<iostream>
 	<sstream>
 	"Engine.hpp"
+
+1288134052 /media/2982-00BC/Projects/Engine/Engine.hpp
+	<Engine/util.hpp>
+	<Engine/Engine.hpp>
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<boost/function.hpp>
+	<boost/bind.hpp>
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	"AniSprite.hpp"
 

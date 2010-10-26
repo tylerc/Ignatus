@@ -11,6 +11,7 @@
     * [DONEISH] Font/Text class
     * [DONEISH] Rid thee of thy warnings
     * [DONEISH] Destroy All Memory Leaks
+    ** Engine.LoadImage may technically leak memory, see notes below, move LoadImage into State class instead?
     * Turn off collision detection for special GameObjects
     * [DONEISH] Documentation
     * Engine doesn't clean GameObjects up after it gets closed down
@@ -209,6 +210,7 @@ about your problems, and I'll see what I can do to fix 'em, alright?
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "AniSprite.hpp"
 
@@ -219,6 +221,8 @@ about your problems, and I'll see what I can do to fix 'em, alright?
 #define unless(exp) if(!(exp))
 #define _Width (signed int)_App(GetWidth())
 #define _Height (signed int)_App(GetHeight())
+#define center_x x+width/2
+#define center_y y+height/2
 
 /// The base class for all objects in a game
 /**
@@ -228,7 +232,7 @@ class GameObject
 {
 public:
     int x,y,width,height;
-    sf::Image Image;
+    sf::Image* Image;
     sf::Sprite* Sprite;
     /// Used for WhileKeyDown and friends, mere mortals need not worry about how it works.
     struct KeyCheck
@@ -363,11 +367,19 @@ public:
     const sf::Input* Input;
     State* CS;
     State* ToChange;
+    std::map<std::string,sf::Image*> Images;
+    std::map<std::string,sf::Image*> ImagesIter;
 
     Engine(std::string title="Completely Wonderful Generic Title", int width=800, int height=600);
     ~Engine();
     void ChangeState(State* S);
     void Looptastic();
+    // This, and the Images and ImagesIter functions above this, are used for caching loaded images, so
+    // things like particles don't have to reload the image each time a new one is created. This boths
+    // saves memory, and leaks memory, depending on your perspective. It saves memory because formerly
+    // when we would create 1000 Particles, we would also be loading 1000 images. Now we would only load
+    // 1 image, but that image stays in memory regardless of whether there's a Particle object instantiated.
+    sf::Image* LoadImage(std::string file);
     static Engine* GetEngine();
 };
 
