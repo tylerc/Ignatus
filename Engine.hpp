@@ -316,6 +316,9 @@ class Particles : public virtual AniObject{
     Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
     ~Particles();
     void Update();
+    static void Explosion(std::string img,int x,int y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Line(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Ring(std::string img,int x,int y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle);
     float angle,speed,fric,turn,wiggle;
     sf::Color tint;
 };

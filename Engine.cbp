@@ -38,7 +38,6 @@
 		<Unit filename="AniSprite.hpp" />
 		<Unit filename="Engine.cpp" />
 		<Unit filename="Engine.hpp" />
-		<Unit filename="Particles.cpp" />
 		<Unit filename="util.cpp" />
 		<Unit filename="util.hpp" />
 		<Extensions>
