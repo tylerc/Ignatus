@@ -187,6 +187,7 @@ Sound::Sound(std::string file, float volume=100.0f) : GameObject(false)
 
 Sound::~Sound()
 {
+    S.Stop();
 }
 
 void Sound::Play()
@@ -217,6 +218,7 @@ Music::Music(std::string file, float volume, bool loop)
 
 Music::~Music()
 {
+    M.Stop();
 }
 
 void Music::Play()
@@ -514,6 +516,12 @@ sf::Image* Engine::LoadImage(std::string file)
 
 Engine::~Engine()
 {
+    delete CS;
+    while (Images.size() != 0)
+    {
+        delete Images.begin()->second;
+        Images.erase(Images.begin());
+    }
     App->Close();
     delete App;
 }

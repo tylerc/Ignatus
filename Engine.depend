@@ -1,22 +1,9 @@
 # depslib dependency file v1.0
-1288109344 source:/media/2982-00BC/Projects/Engine/AniSprite.cpp
-	"AniSprite.hpp"
-
-1288109344 /media/2982-00BC/Projects/Engine/AniSprite.hpp
-	<SFML/System.hpp>
-	<SFML/Graphics.hpp>
-
-1285605184 source:/media/2982-00BC/Projects/Engine/util.cpp
+1288224570 source:f:\projects\engine\engine.cpp
+	"Engine.hpp"
 	"util.hpp"
 
-1285605208 /media/2982-00BC/Projects/Engine/util.hpp
-	<SFML/System.hpp>
-	<SFML/Graphics.hpp>
-	<iostream>
-	<sstream>
-	"Engine.hpp"
-
-1288134052 /media/2982-00BC/Projects/Engine/Engine.hpp
+1288134692 f:\projects\engine\engine.hpp
 	<Engine/util.hpp>
 	<Engine/Engine.hpp>
 	<SFML/System.hpp>
@@ -28,5 +15,22 @@
 	<string>
 	<vector>
 	<map>
+	"AniSprite.hpp"
+
+1288109344 f:\projects\engine\anisprite.hpp
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+
+1285605208 f:\projects\engine\util.hpp
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+	<iostream>
+	<sstream>
+	"Engine.hpp"
+
+1285605184 source:f:\projects\engine\util.cpp
+	"util.hpp"
+
+1288109344 source:f:\projects\engine\anisprite.cpp
 	"AniSprite.hpp"
 
