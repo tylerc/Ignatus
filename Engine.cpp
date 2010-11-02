@@ -362,7 +362,7 @@ void State::Update()
 
     for (std::vector<GameObject*>::iterator pos = Objects.begin(); pos < Objects.end();)
     {
-        if ((*pos)->life == 0)
+        if ((*pos)->life <= 0)
         {
             GameObject* g = *pos;
             Objects.erase(pos);
