@@ -53,6 +53,7 @@ void AniSprite::SetFrameSize(int frameW, int frameH){
 }
 void AniSprite::SetFrame(int frame){
 	this->currentFrame = frame;
+	SetSubRect(GetFramePosition(this->currentFrame));
 }
 void AniSprite::SetLoopSpeed(float newfps){
 	this->fps = newfps;

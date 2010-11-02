@@ -320,10 +320,11 @@ class Particles : public virtual AniObject{
     Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
     ~Particles();
     void Update();
-    static void Explosion(std::string img,int x,int y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    static void Line(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    static void Ring(std::string img,int x,int y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    float angle,speed,fric,turn,wiggle;
+    static void Explosion(std::string img,float x,float y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Line(std::string img,float x,float y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Ring(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Wall(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    float angle,speed,fric,turn,wiggle,fx,fy,sspeed;
     sf::Color tint;
 };
 
@@ -332,6 +333,7 @@ class State
 {
 public:
     std::vector<GameObject*> Objects;
+    std::vector<GameObject*> WaitingObjects;
     std::vector<GameObject*> CollisionObjects;
     /// How this game engine represents events, you won't need to worry about this struct unless you're particularly masochistic.
     struct Event
