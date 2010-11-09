@@ -14,10 +14,10 @@ GameObject::GameObject(std::string file, int x, int y, bool collides)
     this->y = y;
     this->name = "GameObject";
     this->life = 1;
-    _E.CS->Add(this);
+    _CS->Add(this);
     Collides = collides;
     if (collides)
-        _E.CS->AddCollider(this);
+        _CS->AddCollider(this);
 }
 
 GameObject::GameObject(bool collides)
@@ -28,10 +28,10 @@ GameObject::GameObject(bool collides)
     y = 0;
     Sprite = NULL;
     Image = NULL;
-    _E.CS->Add(this);
+    _CS->Add(this);
     Collides = collides;
     if (collides)
-        _E.CS->AddCollider(this);
+        _CS->AddCollider(this);
 }
 
 GameObject::~GameObject()
@@ -87,7 +87,7 @@ void GameObject::KeyPressed(sf::Key::Code key, boost::function<void(sf::Event::E
     Ev.type = sf::Event::KeyPressed;
     Ev.key = key;
     Ev.has_key = true;
-    _E.CS->AddEvent(Ev);
+    _CS->AddEvent(Ev);
 }
 
 void GameObject::KeyReleased(sf::Key::Code key, boost::function<void(sf::Event::Event)> func)
@@ -98,7 +98,7 @@ void GameObject::KeyReleased(sf::Key::Code key, boost::function<void(sf::Event::
     Ev.type = sf::Event::KeyReleased;
     Ev.key = key;
     Ev.has_key = true;
-    _E.CS->AddEvent(Ev);
+    _CS->AddEvent(Ev);
 }
 
 void GameObject::AddEvent(sf::Event::EventType type, boost::function<void(sf::Event::Event)> func)
@@ -108,7 +108,7 @@ void GameObject::AddEvent(sf::Event::EventType type, boost::function<void(sf::Ev
     Ev.func = func;
     Ev.type = type;
     Ev.has_key = false;
-    _E.CS->AddEvent(Ev);
+    _CS->AddEvent(Ev);
 }
 
 void GameObject::SetCollides(bool collides)
@@ -117,9 +117,9 @@ void GameObject::SetCollides(bool collides)
     {
         if (collides == true)
         {
-            _E.CS->AddCollider(this);
+            _CS->AddCollider(this);
         } else {
-            _E.CS->RemoveCollider(this);
+            _CS->RemoveCollider(this);
         }
     }
 }
@@ -149,7 +149,7 @@ void Text::Draw(sf::RenderWindow* App)
     App->Draw(*String);
 }
 
-AniObject::AniObject(std::string file, int width, int height, int frame_rate, bool endOnEnd) : GameObject(true)
+AniObject::AniObject(std::string file, int x, int y, int width, int height, int frame_rate, bool endOnEnd) : GameObject(true)
 {
     Image = _E.LoadImage(file);
     Image->SetSmooth(false);
@@ -246,7 +246,7 @@ void Music::Volume(float vol)
     M.SetVolume(vol);
 }
 
-Particles::Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle):AniObject(img,width,height,fps,eoe){
+Particles::Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle):AniObject(img,x,y,width,height,fps,eoe){
     this->angle=angle;
     this->speed=speed;
     this->tint=tint;
@@ -315,6 +315,7 @@ State::State()
 {
     setup = false;
     killme = false;
+    ClearColor = sf::Color(0, 0, 0);
 }
 
 State::~State()
@@ -434,8 +435,8 @@ void State::Update()
         Objects[i]->Update();
     }
 
-    // Clear the screen (fill it with black color)
-    _E.App->Clear();
+    // Clear the screen
+    _E.App->Clear(ClearColor);
 
     for (unsigned int i = 0; i < Objects.size(); i++)
     {

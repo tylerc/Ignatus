@@ -7,13 +7,13 @@ AniSprite::AniSprite(void):sf::Sprite(){
 	this->SetFrameSize(0, 0);
 	this->endonend=false;
 }
-AniSprite::AniSprite(const sf::Image& Img, int frameW, int frameH, float fps,bool center) : sf::Sprite(Img){
+AniSprite::AniSprite(const sf::Image& Img, int frameW, int frameH, float fps, bool endOnEnd, bool center) : sf::Sprite(Img){
 	this->fps=fps;
 	this->currentFrame=0;
 	this->isPlaying=false;
 	this->loopStart=0;
 	this->SetFrameSize(frameW,frameH);
-	this->endonend=false;
+	this->endonend=endOnEnd;
 	if(center){
         this->SetCent();
 	}

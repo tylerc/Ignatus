@@ -9,7 +9,7 @@ class AniSprite : public sf::Sprite
 {
 public:
 	AniSprite();
-	AniSprite(const sf::Image& Img, int frameWidth, int frameHeight,float fps,bool center);
+	AniSprite(const sf::Image& Img, int frameWidth, int frameHeight, float fps, bool endOnEnd, bool center=false);
 	~AniSprite(void);
 	sf::IntRect GetFramePosition(int frame);
 	int GetFrameCount();
@@ -23,7 +23,7 @@ public:
 	void Play(int start, int end);
 	void Stop();
 	void Update();
-private:
+
 	sf::Clock clock;
 	float fps;
 	bool isPlaying;

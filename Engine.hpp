@@ -1,4 +1,5 @@
-/*
+/** \page TODO
+\verbatim
     TODO
 
     * [DONEISH] Events (yeah, yeah, we have them, but they could be more awesome) (THEY NEED TO BE MORE AWESOME!! WE NEED A WHILE_KEY_DOWN EVENT!!!)
@@ -15,11 +16,13 @@
     * Turn off collision detection for special GameObjects
     * [DONEISH] Documentation
     * Engine doesn't clean GameObjects up after it gets closed down
+    * Depth
 
     DONE
 
     * Object Life
     * Librarify
+\endverbatim
 */
 
 /** \mainpage Scorched Sea/Ignatus/Ignesco/Engine
@@ -217,6 +220,7 @@ about your problems, and I'll see what I can do to fix 'em, alright?
 #define fn(f) boost::bind(f, this)
 #define fn1(f) boost::bind(f, this, _1)
 #define _E (*Engine::GetEngine())
+#define _CS _E.CS
 #define _App(f) _E.App->f
 #define unless(exp) if(!(exp))
 #define _Width (signed int)_App(GetWidth())
@@ -279,7 +283,7 @@ class AniObject : public virtual GameObject
 public:
     AniSprite* AS;
 
-    AniObject(std::string file, int width, int height, int frame_rate, bool endOnEnd);
+    AniObject(std::string file, int x, int y, int width, int height, int frame_rate, bool endOnEnd);
     virtual ~AniObject();
 
     virtual void UpdateMagic();
@@ -347,6 +351,7 @@ public:
     std::vector<Event> Events;
     bool setup;
     bool killme;
+    sf::Color ClearColor;
 
     State();
     virtual ~State();
