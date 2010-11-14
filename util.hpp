@@ -1,12 +1,6 @@
 #ifndef UTIL_HPP_INCLUDED
 #define UTIL_HPP_INCLUDED
 
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <sstream>
-#include "Engine.hpp"
-
 std::string to_s(int i);
 bool collision_between(GameObject* obj1, GameObject* obj2);
 float degrees_to_radians(float angle);
