@@ -1,27 +1,5 @@
 #include "util.hpp"
 
-sf::Image load_image(std::string file)
-{
-    sf::Image loading;
-    if (!loading.LoadFromFile(file))
-    {
-        std::cout << "Couldn't load image " << file << std::endl;
-        exit(1);
-    }
-    return loading;
-}
-
-sf::Font load_font(std::string file, int size)
-{
-    sf::Font loading;
-    if (!loading.LoadFromFile(file, size))
-    {
-        std::cout << "Couldn't load font " << file << std::endl;
-        exit(1);
-    }
-    return loading;
-}
-
 std::string to_s(int i)
 {
     std::ostringstream stm;
@@ -41,4 +19,16 @@ bool collision_between(GameObject* obj1, GameObject* obj2)
         return false;
 
     return true;
+}
+
+float degrees_to_radians(float angle)
+{
+    return angle * 3.141592653589793/180;
+}
+
+float distance_between(int x1, int y1, int x2, int y2)
+{
+    int a = x2-x1;
+    int b = y2-y1;
+    return sqrt(a*a + b*b);
 }

@@ -393,7 +393,7 @@ void State::Update()
 
     for (unsigned int i = 0; i < CollisionObjects.size(); i++)
     {
-        for (unsigned int j = i; j < CollisionObjects.size(); j++)
+        for (unsigned int j = i+1; j < CollisionObjects.size(); j++)
         {
             if (collision_between(CollisionObjects[i], CollisionObjects[j]))
             {
@@ -412,8 +412,8 @@ void State::Update()
             _E.App->Close();
         if (Event.Type == sf::Event::KeyReleased)
         {
-            if (Event.Key.Code == sf::Key::Escape)
-                _E.App->Close();
+            //if (Event.Key.Code == sf::Key::Escape)
+            //    _E.App->Close();
         }
         for (unsigned int i = 0; i < Events.size(); i++)
         {
@@ -493,8 +493,6 @@ Engine::Engine(std::string title, int width, int height)
 
 void Engine::ChangeState(State* S)
 {
-    //CS = S;
-    //CS->SSetup();
     ToChange = S;
 }
 
