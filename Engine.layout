@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="AniSprite.cpp" open="1" top="0" tabpos="4">
+	<File name="AniSprite.cpp" open="1" top="0" tabpos="13">
 		<Cursor position="2371" topLine="63" />
 	</File>
-	<File name="AniSprite.hpp" open="1" top="0" tabpos="3">
+	<File name="AniSprite.hpp" open="1" top="0" tabpos="12">
 		<Cursor position="718" topLine="9" />
 	</File>
-	<File name="Engine.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="3442" topLine="144" />
+	<File name="Engine.cpp" open="1" top="1" tabpos="11">
+		<Cursor position="11873" topLine="468" />
 	</File>
-	<File name="Engine.hpp" open="1" top="0" tabpos="1">
-		<Cursor position="12046" topLine="320" />
+	<File name="Engine.hpp" open="1" top="0" tabpos="10">
+		<Cursor position="12046" topLine="358" />
 	</File>
 	<File name="util.hpp" open="0" top="0" tabpos="13">
 		<Cursor position="176" topLine="0" />

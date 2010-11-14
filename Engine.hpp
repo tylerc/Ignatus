@@ -216,6 +216,7 @@ about your problems, and I'll see what I can do to fix 'em, alright?
 #include <map>
 
 #include "AniSprite.hpp"
+#include "Point.hpp"
 
 #define fn(f) boost::bind(f, this)
 #define fn1(f) boost::bind(f, this, _1)
@@ -227,13 +228,12 @@ about your problems, and I'll see what I can do to fix 'em, alright?
 #define _Height (signed int)_App(GetHeight())
 #define center_x x+width/2
 #define center_y y+height/2
-
-/// The base class for all objects in a game
+/// The base class for all objects in a game.
 /**
-
+This uses some basic values and handles them very well, such as the posistion
+of the image on the screen and handling the image itself.
 */
-class GameObject
-{
+class GameObject{
 public:
     int x,y,width,height;
     sf::Image* Image;
@@ -263,7 +263,29 @@ public:
     void WhileKeyDown(sf::Key::Code Key, boost::function<void()> func);
     void SetCollides(bool collides);
 };
+/// Static images are boring, spice things up with easy animated images!
+class AniObject : public virtual GameObject{
+public:
+    AniSprite* AS;
 
+    AniObject(std::string file, int x, int y, int width, int height, int frame_rate, bool endOnEnd);
+    virtual ~AniObject();
+
+    virtual void UpdateMagic();
+};
+/// Pretty effects, in any color you want!
+class Particles : public virtual AniObject{
+    public:
+    Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    ~Particles();
+    void Update();
+    static void Explosion(std::string img,float x,float y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Line(std::string img,float x,float y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Ring(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    static void Wall(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
+    float angle,speed,fric,turn,wiggle,fx,fy,sspeed;
+    sf::Color tint;
+};
 /// Need easy Text? This is your class.
 class Text : public virtual GameObject
 {
@@ -275,18 +297,6 @@ public:
     Text(std::string s, float size, std::string file);
     void Draw(sf::RenderWindow* App);
     void Reset();
-};
-
-/// Static images are boring, spice things up with easy animated images!
-class AniObject : public virtual GameObject
-{
-public:
-    AniSprite* AS;
-
-    AniObject(std::string file, int x, int y, int width, int height, int frame_rate, bool endOnEnd);
-    virtual ~AniObject();
-
-    virtual void UpdateMagic();
 };
 
 /// All your sound effect needs, in one convient place.
@@ -318,19 +328,6 @@ public:
     void Volume(float vol);
 };
 
-/// Pretty effects, in any color you want!
-class Particles : public virtual AniObject{
-    public:
-    Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    ~Particles();
-    void Update();
-    static void Explosion(std::string img,float x,float y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    static void Line(std::string img,float x,float y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    static void Ring(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    static void Wall(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle);
-    float angle,speed,fric,turn,wiggle,fx,fy,sspeed;
-    sf::Color tint;
-};
 
 /// GameObjects need to be managed, and different game "screens" need to be separated, this is where it happens.
 class State
@@ -367,26 +364,68 @@ public:
 };
 
 /// The Boss of the entire operation, need anything to get done, you talk to this guy.
+/**
+This runs the show. It gets you off the ground with an SFML RenderWindow, handles States
+and state changes, as well as image caching. If you're looking for a place to start, start
+here, if not, I can hear the other classes calling your name.
+*/
 class Engine
 {
 public:
-    sf::RenderWindow* App;
-    const sf::Input* Input;
-    State* CS;
-    State* ToChange;
-    std::map<std::string,sf::Image*> Images;
-    std::map<std::string,sf::Image*> ImagesIter;
+    sf::RenderWindow* App; //!< Engine's SFML RenderWindow, your game is drawn on this.
+    const sf::Input* Input; //!< Handle to the RenderWindow's input, if you need info on the current state of the keyboard, mouse, etc., go here.
+    State* CS; //!< Pointer to the current game State.
+    State* ToChange; //!< Pointer to the state that's about to be changed into.
+    std::map<std::string,sf::Image*> Images; //!< Engine's cache of all the images (reduces both memory use and lag).
+    std::map<std::string,sf::Image*> ImagesIter; //!< Iterator for the image cache.
 
+    /// The Engine's constuctor.
+    /**
+    Creates everything you need to get up off the ground. Takes 3 parameters, the title, the width, and the height of the
+    window. After calling the constructor, it's advised that you create your own instance of the State class (though an empty
+    one is created for you by default). After your state initialization is done, call Looptastic to start the game loop!
+    */
     Engine(std::string title="Completely Wonderful Generic Title", int width=800, int height=600);
+    /// The Engine's destructor, cleans up EVERYTHING! You dirty scoudrel.
+    /**
+    So I was sitting around one day, and I was like, WTF? You allocated way too much freakin' memory! So what did I do?
+    I freed the memory for your class! MUAHAHAHA! THEN I CALLED THIS DESTRUCTOR! And EVERYTHING was gone! :D
+
+    Do it again, and you're dead. Thanks. :)
+    */
     ~Engine();
+    /// Changes the currently active game state.
+    /**
+    Changes the current game state, the former state is allowed to finish it's iteration before this happens.
+    If the state has the variable killme set to true, the engine will deallocate the state's memory, otherwise
+    it's kept around so you can still keep a pointer to it.
+    */
     void ChangeState(State* S);
+    /// The game loop. 'Nuf said.
+    /**
+    jk?
+    Alright, so basically, the engine handles various maintenence tasks, and then calls State's update function.
+    Other than that, it's your basic everyday game loop.
+    */
     void Looptastic();
-    // This, and the Images and ImagesIter functions above this, are used for caching loaded images, so
-    // things like particles don't have to reload the image each time a new one is created. This boths
-    // saves memory, and leaks memory, depending on your perspective. It saves memory because formerly
-    // when we would create 1000 Particles, we would also be loading 1000 images. Now we would only load
-    // 1 image, but that image stays in memory regardless of whether there's a Particle object instantiated.
+    /// Loads an image for GameObjects, odds are you won't need to use this unless you're hacking on Engine internals.
+    /**
+    Loads an image from file, and caches in the Images map.
+
+    Memory leak notes:
+
+    This, and the Images and ImagesIter functions above this, are used for caching loaded images, so
+    things like particles don't have to reload the image each time a new one is created. This boths
+    saves memory, and leaks memory, depending on your perspective. It saves memory because formerly
+    when we would create 1000 Particles, we would also be loading 1000 images. Now we would only load
+    1 image, but that image stays in memory regardless of whether there's a Particle object instantiated.
+    */
     sf::Image* LoadImage(std::string file);
+    /// Magic. Look away.
+    /**
+    Used internally so we can access the current instance of the Engine using _E.
+    Unless your name is Tyler Church, you will never need to worry about this function.
+    */
     static Engine* GetEngine();
 };
 

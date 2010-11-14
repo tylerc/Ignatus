@@ -1,1 +1,43 @@
 # depslib dependency file v1.0
+1289520262 source:f:\awesomec++\engine\engine.cpp
+	"Engine.hpp"
+	"util.hpp"
+
+1289670340 f:\awesomec++\engine\engine.hpp
+	<Engine/util.hpp>
+	<Engine/Engine.hpp>
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<boost/function.hpp>
+	<boost/bind.hpp>
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	"AniSprite.hpp"
+	"Point.hpp"
+
+1289425810 f:\awesomec++\engine\anisprite.hpp
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+
+1289670644 f:\awesomec++\engine\point.hpp
+
+1289670366 f:\awesomec++\engine\util.hpp
+	<SFML/System.hpp>
+	<SFML/Graphics.hpp>
+	<iostream>
+	<sstream>
+	"Engine.hpp"
+
+1289669456 source:f:\awesomec++\engine\point.cpp
+	"Point.hpp"
+	<math.h>
+
+1289434586 source:f:\awesomec++\engine\util.cpp
+	"util.hpp"
+
+1289316808 source:f:\awesomec++\engine\anisprite.cpp
+	"AniSprite.hpp"
+
