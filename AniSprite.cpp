@@ -1,11 +1,14 @@
 #include "AniSprite.hpp"
-AniSprite::AniSprite(void):sf::Sprite(){
-	this->fps=1;
+
+namespace Ignatus{
+
+AniSprite::AniSprite() : sf::Sprite(){
+	this->fps=0;
 	this->currentFrame=0;
 	this->isPlaying=false;
 	this->loopStart=0;
-	this->SetFrameSize(0, 0);
-	this->endonend=false;
+	this->SetFrameSize(1,1);
+	this->endonend=true;
 }
 AniSprite::AniSprite(const sf::Image& Img, int frameW, int frameH, float fps, bool endOnEnd, bool center) : sf::Sprite(Img){
 	this->fps=fps;
@@ -83,4 +86,6 @@ void AniSprite::Update(){
         }
 		this->SetSubRect(GetFramePosition(currentFrame));
 	}
+}
+
 }

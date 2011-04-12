@@ -1,0 +1,42 @@
+/** \page TODO
+\verbatim
+    TODO
+
+    * Document things.
+    * Engine doesn't clean GameObjects up after it gets closed down.
+    * MyEnigne and MyState variables.
+    * Add Ignatus::State::RemoveObject(); - In Progress
+    * Add Text Input
+    * Add SlideBars
+    * Make ready to publicly distribute
+
+    THEORY
+
+    * Move Engine::LoadImage into State class instead?
+    * Differance from Music and Sound?
+    * We could add push_state and pop_state as well as switch_state
+    * Maybe an Eventable class, so States don't have to create Triggers
+    * Check if comp has multiple cores, if so, begine to thread things
+    * Allow multiple windows from states.
+    * write Window Class.
+    * Make Engine Local.
+    * Fix FPS fluxes with particles
+
+    DONEISH
+
+    *  Font/Text class - Almost There
+    *  Rid thee of thy warnings - Toughy
+    *  Destroy All Memory Leaks - Gotta find more.
+    *  Collision Detection - Needs Work.
+    *  Game States - Could use Cleaning.
+    *  Events - Need Mouse Events and Typing.
+    *  Add EngineState. - Needs State::RemoveObject();
+
+    DONE
+
+    * Turn off collision detection for special GameObjects
+    * Depth
+    * Object Life
+    * Librarify
+\endverbatim
+*/

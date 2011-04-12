@@ -1,16 +1,22 @@
 #include "All.hpp"
 
-GameObject::GameObject(std::string file, int x, int y, bool collides)
+namespace Ignatus{
+
+GameObject::GameObject(std::string file, Point<float> xy, bool collides)
 {
     Image = _E.LoadImage(file);
     Image->SetSmooth(false);
     Sprite = new sf::Sprite(*Image);
-    this->width = Image->GetWidth();
-    this->height = Image->GetHeight();
-    this->x = x;
-    this->y = y;
-    this->name = "GameObject";
-    this->life = 1;
+    Dimensions=Point<int>(Image->GetWidth(),Image->GetHeight());
+    Position=xy;
+    Center=Position+Pointf(Dimensions.x,Dimensions.y)/Pointf(2);
+    Depth=0;
+    Velocity=Point<float>();
+    AddName("GameObject");
+    this->Name = "GameObject";
+    this->Life = 1;
+    this->DoNotDelete = false;
+    World=true;
     _CS->Add(this);
     Collides = collides;
     if (collides)
@@ -19,12 +25,16 @@ GameObject::GameObject(std::string file, int x, int y, bool collides)
 
 GameObject::GameObject(bool collides)
 {
-    life = 1;
-    name = "GameObject";
-    x = 0;
-    y = 0;
+    Life = 1;
+    Depth=0;
+    AddName("GameObject");
+    Name = "GameObject";
+    Position=Point<float>();
+    Velocity=Point<float>();
+    Dimensions=Point<int>();
     Sprite = NULL;
     Image = NULL;
+    World=true;
     _CS->Add(this);
     Collides = collides;
     if (collides)
@@ -48,10 +58,14 @@ void GameObject::Update() {}
 
 void GameObject::Draw(sf::RenderWindow* App)
 {
+    if(Velocity!=Pointf())Position+=Velocity;
     if (Sprite != NULL)
     {
-        Sprite->SetPosition(x, y);
+        Center=Position+Pointf(Dimensions.x,Dimensions.y)/Pointf(2);
+        Sprite->SetPosition(Position.TwoVector());
         App->Draw(*Sprite);
+    }else{
+        Center=Position;
     }
 }
 
@@ -66,6 +80,7 @@ void GameObject::UpdateMagic()
             WhileKeyPressedChecks[i].func();
         }
     }
+    Update();
 }
 
 void GameObject::WhileKeyDown(sf::Key::Code Key, boost::function<void()> func)
@@ -76,7 +91,7 @@ void GameObject::WhileKeyDown(sf::Key::Code Key, boost::function<void()> func)
     WhileKeyPressedChecks.push_back(kc);
 }
 
-void GameObject::KeyPressed(sf::Key::Code key, boost::function<void(sf::Event::Event)> func)
+void GameObject::KeyPressed(sf::Key::Code key, boost::function<void()> func)
 {
     State::Event Ev;
     Ev.owner = this;
@@ -87,7 +102,7 @@ void GameObject::KeyPressed(sf::Key::Code key, boost::function<void(sf::Event::E
     _CS->AddEvent(Ev);
 }
 
-void GameObject::KeyReleased(sf::Key::Code key, boost::function<void(sf::Event::Event)> func)
+void GameObject::KeyReleased(sf::Key::Code key, boost::function<void()> func)
 {
     State::Event Ev;
     Ev.owner = this;
@@ -98,7 +113,7 @@ void GameObject::KeyReleased(sf::Key::Code key, boost::function<void(sf::Event::
     _CS->AddEvent(Ev);
 }
 
-void GameObject::AddEvent(sf::Event::EventType type, boost::function<void(sf::Event::Event)> func)
+void GameObject::AddEvent(sf::Event::EventType type, boost::function<void()> func)
 {
     State::Event Ev;
     Ev.owner = this;
@@ -119,4 +134,37 @@ void GameObject::SetCollides(bool collides)
             _CS->RemoveCollider(this);
         }
     }
+}
+
+GameObject* GameObject::GetNearest(std::string name){
+    float closest=1000000;
+    GameObject* Result=null;
+    for(unsigned int a=0;a<_CS->GameObjects.size();a++){
+        GameObject* g = _CS->GameObjects[a];
+        if (g != this and (_CS->GameObjects[a]->Isa(name) == name))
+        {
+            float distance=Position.Get_Distance(g->Position);
+            if (distance < closest)
+            {
+                closest = distance;
+                Result = g;
+            }
+        }
+    }
+    return Result;
+}
+
+void GameObject::AddName(std::string NewName){
+    Names.push_back(NewName);
+}
+
+std::string GameObject::Isa(std::string GetName){
+    for(unsigned int a=0;a<Names.size();a++){
+        if(GetName==Names[a]){
+            return Names[a];
+        }
+    }
+    return "";
+}
+
 }

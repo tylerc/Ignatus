@@ -1,18 +1,23 @@
 #ifndef STATE_HPP_INCLUDED
 #define STATE_HPP_INCLUDED
 
+namespace Ignatus{
+
 /// GameObjects need to be managed, and different game "screens" need to be separated, this is where it happens.
 class State
 {
 public:
-    std::vector<GameObject*> Objects;
+    Engine* MyEngine;
+    std::vector<GameObject*> GameObjects;
     std::vector<GameObject*> WaitingObjects;
     std::vector<GameObject*> CollisionObjects;
+    int MouseX,MouseY;
+    Point<float> Mouse_Pos;
     /// How this game engine represents events, you won't need to worry about this struct unless you're particularly masochistic.
     struct Event
     {
         GameObject* owner;
-        boost::function<void(sf::Event::Event)> func;
+        boost::function<void()> func;
         sf::Event::EventType type;
         sf::Key::Code key;
         bool has_key;
@@ -21,10 +26,13 @@ public:
     bool setup;
     bool killme;
     sf::Color ClearColor;
+    sf::RenderWindow* App;
+    sf::Event Ev;
 
     State();
     virtual ~State();
     void Add(GameObject* g);
+    void RemoveObject(GameObject* g);
     void AddEvent(Event Ev);
     virtual void Update();
     void SSetup();
@@ -34,5 +42,6 @@ public:
     void AddCollider(GameObject* g);
     void RemoveCollider(GameObject* g);
 };
+}
 
 #endif // STATE_HPP_INCLUDED

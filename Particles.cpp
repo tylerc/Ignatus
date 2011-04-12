@@ -1,66 +1,70 @@
 #include "All.hpp"
 
-Particles::Particles(std::string img,int x,int y,int width,int height,int fps,bool eoe,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle):AniObject(img,x,y,width,height,fps,eoe){
-    this->angle=angle;
-    this->speed=speed;
+namespace Ignatus{
+
+Particles::Particles(std::string img,Point<float> xy,Point<int> dim,int fps,bool eoe,Point<float> vel,sf::Color tint,float fric,float turn,float wiggle,bool World):AniObject(img,xy,dim,fps,eoe){
+    Velocity=vel.TwoVelocity();
     this->tint=tint;
     this->fric=fric;
     this->wiggle=wiggle;
     this->turn=turn;
-    this->fx=x;
-    this->fy=y;
-    this->sspeed=speed;
     SetCollides(false);
-    Sprite->SetCenter(width/2,height/2);
+    AddName("Particle");
+    Sprite->SetCenter(dim.x/2,dim.y/2);
     Sprite->SetColor(tint);
+    this->World=World;
+    Depth=0.1;
+}
+Particles::Particles(Part_DNA dna):AniObject(dna.img,dna.xy,dna.dim,dna.fps,dna.eoe){
+    Depth=0.1;
+    AddName("Particle");
+    Velocity=dna.vel.TwoVelocity();
+    this->tint=dna.tint;
+    this->fric=dna.fric;
+    this->wiggle=dna.wiggle;
+    this->turn=dna.turn;
+    SetCollides(false);
+    Sprite->SetCenter(dna.dim.x/2,dna.dim.y/2);
+    Sprite->SetColor(dna.tint);
+    this->World=dna.world;
 }
 Particles::~Particles(){}
 void Particles::Update(){
-    angle+=turn+sf::Randomizer::Random(-wiggle,wiggle);
-    fx=fx+speed*cos(angle*0.01745);
-    fy=fy+speed*sin(angle*0.01745);
-    x=fx;
-    y=fy;
+    ///Convert velocity from vel to angle add random angle and convert back.
+    Point<float> Temp_Point=Velocity.TwoAngle();
+    Temp_Point.x*=fric;
+    Temp_Point.y+=turn+sf::Randomizer::Random(-wiggle,wiggle);
+    Velocity=Temp_Point.TwoVelocity();
+
     float r=tint.r;
     float g=tint.g;
     float b=tint.b;
     float a=255;
-    if(speed<=3){
-        a=(speed/3)*255;
+    if(Temp_Point.x<=3){
+        a=(Temp_Point.x/3)*255;
     }
+    ///Destroy particales off screen. V
+    //if(AS->GetRect().Intersects(sf::Rect<int>(_E.Screen_View,obj2->Position.y,obj2->Position.x+obj2->Dimensions.x,obj2->Position.y+obj2->Dimensions.y)))
+    if(Temp_Point.x<=1)Life=0;
     tint=sf::Color(r,g,b,a);
     Sprite->SetColor(tint);
-    speed*=fric;
-    if(speed<=1 or x<0 or y<0 or x>_Width or y>_Height){
-        life=0;
-    }
 }
-void Particles::Explosion(std::string img,float x,float y,int width,int height,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle)
-{
+void Particles::Explosion(std::string img,Point<float> xy,Point<int> dim,int fps,bool eoe,int num,float speed,sf::Color tint,float fric,float turn,float wiggle,bool World){
     for(int a=0;a<num;a++){
-        Particles* P = new Particles(img,x,y,width,height,fps,eoe,rand()%360,sf::Randomizer::Random(speed/2,speed*1.5),tint,fric,turn,wiggle);
+        new Particles(img,xy,dim,fps,eoe,Point<float>(sf::Randomizer::Random(speed/2,speed*1.5),rand()%360),tint,fric,turn,wiggle,World);
     }
 }
-void Particles::Line(std::string img,float x,float y,int width,int height,int fps,bool eoe,float angle,float spread,int num,float speed,sf::Color tint,float fric,float turn,float wiggle){
-    for(int a=0;a<num;a++){
-        Particles* P = new Particles(img,x,y,width,height,fps,eoe,angle+sf::Randomizer::Random(-spread,spread),sf::Randomizer::Random(1.f,speed),tint,fric,turn,wiggle);
-        Particles* G = new Particles(img,x,y,width,height,fps,eoe,angle+180+sf::Randomizer::Random(-spread,spread),sf::Randomizer::Random(1.f,speed),tint,fric,turn,wiggle);
-    }
-}
-void Particles::Ring(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle){
+
+void Particles::Ring(std::string img,Point<float> xy,Point<int> dim,int fps,bool eoe,float num,bool rnd,float speed,sf::Color tint,float fric,float turn,float wiggle,bool World){
     int step=360/num;
+    int off=rand()%360;
     for(int a=0;a<num;a++){
         if(rnd==false){
-            Particles* P=new Particles(img,x,y,width,height,fps,eoe,step*a+rand()%360,speed,tint,fric,turn,wiggle);
+            new Particles(img,xy,dim,fps,eoe,Point<float>(speed,a*step+off),tint,fric,turn,wiggle,World);
         }else{
-            Particles* P=new Particles(img,x,y,width,height,fps,eoe,rand()%360,speed,tint,fric,turn,wiggle);
+            new Particles(img,xy,dim,fps,eoe,Point<float>(speed,rand()%360),tint,fric,turn,wiggle,World);
         }
     }
 }
-void Particles::Wall(std::string img,float x,float y,int width,int height,int fps,bool eoe,float num,float angle,float speed,sf::Color tint,float fric,float turn,float wiggle){
-    int step=speed/num;
-    for(int a=0;a<num;a++){
-        Particles* P=new Particles(img,x,y,width,height,fps,eoe,angle-90,step*a+2,tint,fric,turn,wiggle);
-        Particles* G=new Particles(img,x,y,width,height,fps,eoe,angle+90,step*a+2,tint,fric,turn,wiggle);
-    }
+
 }

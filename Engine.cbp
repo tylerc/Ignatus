@@ -5,6 +5,7 @@
 		<Option title="Engine" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="Templates/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="libEngine" prefix_auto="1" extension_auto="1" />
@@ -34,16 +35,66 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="2D_Model.cpp" />
+		<Unit filename="2D_Model.hpp" />
+		<Unit filename="All.hpp" />
+		<Unit filename="AniObject.cpp" />
+		<Unit filename="AniObject.hpp" />
 		<Unit filename="AniSprite.cpp" />
 		<Unit filename="AniSprite.hpp" />
+		<Unit filename="Camera.cpp" />
+		<Unit filename="Camera.hpp" />
+		<Unit filename="Doxyconf" />
 		<Unit filename="Engine.cpp" />
 		<Unit filename="Engine.hpp" />
+		<Unit filename="GUI/Bar.cpp" />
+		<Unit filename="GUI/Bar.hpp" />
+		<Unit filename="GUI/SlideBar.cpp" />
+		<Unit filename="GUI/SlideBar.hpp" />
+		<Unit filename="GameObject.cpp" />
+		<Unit filename="GameObject.hpp" />
+		<Unit filename="IncludesAndDefines.hpp" />
+		<Unit filename="Music.cpp" />
+		<Unit filename="Music.hpp" />
+		<Unit filename="Part_DNA.cpp" />
+		<Unit filename="Part_DNA.hpp" />
+		<Unit filename="Particle.cpp" />
+		<Unit filename="Particle.hpp" />
+		<Unit filename="Particles.cpp" />
+		<Unit filename="Particles.hpp" />
+		<Unit filename="Point.hpp" />
+		<Unit filename="Point.inl">
+			<Option virtualFolder="Templates/" />
+		</Unit>
+		<Unit filename="Polygon.cpp" />
+		<Unit filename="Polygon.hpp" />
+		<Unit filename="Projectile.cpp" />
+		<Unit filename="Projectile.hpp" />
+		<Unit filename="README" />
+		<Unit filename="Sound.cpp" />
+		<Unit filename="Sound.hpp" />
+		<Unit filename="State.cpp" />
+		<Unit filename="State.hpp" />
+		<Unit filename="Steps to link engine.txt" />
+		<Unit filename="TODO.txt" />
+		<Unit filename="TUTORIAL" />
+		<Unit filename="Text.cpp" />
+		<Unit filename="Text.hpp" />
 		<Unit filename="util.cpp" />
 		<Unit filename="util.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
 			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

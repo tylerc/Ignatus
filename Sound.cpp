@@ -1,5 +1,7 @@
 #include "All.hpp"
 
+namespace Ignatus{
+
 Sound::Sound(std::string file, float volume=100.0f) : GameObject(false)
 {
     if (!SB.LoadFromFile(file))
@@ -9,6 +11,7 @@ Sound::Sound(std::string file, float volume=100.0f) : GameObject(false)
     }
     S.SetBuffer(SB);
     S.SetVolume(volume);
+    AddName("Sound");
 }
 
 Sound::~Sound()
@@ -29,4 +32,6 @@ float Sound::Volume()
 void Sound::Volume(float vol)
 {
     S.SetVolume(vol);
+}
+
 }

@@ -1,14 +1,14 @@
 #ifndef ANISPRITE_HPP_INCLUDED
 #define ANISPRITE_HPP_INCLUDED
 
-#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+namespace Ignatus{
 
 /// You know AniObject? It whores almost everything out to this class.
 class AniSprite : public sf::Sprite
 {
 public:
-	AniSprite();
+    AniSprite();
 	AniSprite(const sf::Image& Img, int frameWidth, int frameHeight, float fps, bool endOnEnd, bool center=false);
 	~AniSprite(void);
 	sf::IntRect GetFramePosition(int frame);
@@ -34,4 +34,6 @@ public:
 	int frameHeight;
 	bool endonend;
 };
+
+}
 #endif // ANISPRITE_HPP_INCLUDED

@@ -1,5 +1,7 @@
 #include "All.hpp"
 
+namespace Ignatus{
+
 Music::Music(std::string file, float volume, bool loop)
 {
     if (!M.OpenFromFile(file))
@@ -39,4 +41,6 @@ float Music::Volume()
 void Music::Volume(float vol)
 {
     M.SetVolume(vol);
+}
+
 }

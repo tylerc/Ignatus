@@ -1,6 +1,8 @@
 #ifndef ENGINE_HPP_INCLUDED
 #define ENGINE_HPP_INCLUDED
 
+namespace Ignatus{
+
 /// The Boss of the entire operation, need anything to get done, you talk to this guy.
 /**
 This runs the show. It gets you off the ground with an SFML RenderWindow, handles States
@@ -10,12 +12,22 @@ here, if not, I can hear the other classes calling your name.
 class Engine
 {
 public:
+    bool DEBUG; //!< Cout's debuging info, such as what the engine is doing...
+    bool TakeScreenshot;
+    std::string ScreenshotName;
+    sf::Image ScreenShot;
+    sf::Sprite ScreenShotImg;
+    sf::Color ClearColor;
     sf::RenderWindow* App; //!< Engine's SFML RenderWindow, your game is drawn on this.
     const sf::Input* Input; //!< Handle to the RenderWindow's input, if you need info on the current state of the keyboard, mouse, etc., go here.
     State* CS; //!< Pointer to the current game State.
+    State* EngineState; //!< This State is for Objects that are around for the entire game, like music.
     State* ToChange; //!< Pointer to the state that's about to be changed into.
     std::map<std::string,sf::Image*> Images; //!< Engine's cache of all the images (reduces both memory use and lag).
     std::map<std::string,sf::Image*> ImagesIter; //!< Iterator for the image cache.
+    //Point<float> xy,Point<int> dim,sf::RenderWindow* app
+    Camera* World_View; //!< This is a custom view of the game world, which may extend past the window you see.
+    Camera* Screen_View; //!< This is the view of the UI or HUD, should matches the screen window.
 
     /// The Engine's constuctor.
     /**
@@ -23,7 +35,7 @@ public:
     window. After calling the constructor, it's advised that you create your own instance of the State class (though an empty
     one is created for you by default). After your state initialization is done, call Looptastic to start the game loop!
     */
-    Engine(std::string title="Completely Wonderful Generic Title", int width=800, int height=600);
+    Engine(std::string title="Completely Wonderful Generic Title", int width=800, int height=600,State* changeto = new State());
     /// The Engine's destructor, cleans up EVERYTHING! You dirty scoudrel.
     /**
     So I was sitting around one day, and I was like, WTF? You allocated way too much freakin' memory! So what did I do?
@@ -39,6 +51,7 @@ public:
     it's kept around so you can still keep a pointer to it.
     */
     void ChangeState(State* S);
+    void CaptureScreenshot(std::string filename="");
     /// The game loop. 'Nuf said.
     /**
     jk?
@@ -67,4 +80,5 @@ public:
     static Engine* GetEngine();
 };
 
+}
 #endif // ENGINE_HPP_INCLUDED

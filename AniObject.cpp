@@ -1,17 +1,18 @@
 #include "All.hpp"
 
-AniObject::AniObject(std::string file, int x, int y, int width, int height, int frame_rate, bool endOnEnd) : GameObject(true)
+namespace Ignatus{
+AniObject::AniObject(std::string file,Point<float> xy, Point<int> dim, int frame_rate, bool endOnEnd) : GameObject(true)
 {
     Image = _E.LoadImage(file);
     Image->SetSmooth(false);
-    AS = new AniSprite(*Image, width, height, frame_rate, endOnEnd);
+    AS = new AniSprite(*Image, dim.x, dim.y, frame_rate, endOnEnd);
     Sprite = AS;
-    this->width = width;
-    this->height = height;
-    this->x = x;
-    this->y = y;
-    this->name = "AniObject";
-    this->life = 1;
+    Dimensions=dim;
+    Center=Position+Pointf(dim.x,dim.y)/Pointf(2);
+    Position=xy;
+    AddName("AniObject");
+    this->Name = "AniObject";
+    this->Life = 1;
     AS->Play();
 }
 
@@ -21,6 +22,9 @@ AniObject::~AniObject()
 
 void AniObject::UpdateMagic()
 {
-    GameObject::Update();
-    AS->Update();
+    GameObject::UpdateMagic();
+    if(AS!=NULL)
+        AS->Update();
+}
+
 }

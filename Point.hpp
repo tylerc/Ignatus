@@ -1,76 +1,69 @@
 #ifndef POINT_HPP_INCLUDED
 #define POINT_HPP_INCLUDED
+namespace Ignatus{
 /// Point is for using velocities and angle movement. Also used for coords.
 /**
-This basicly as two float values; x and y. This allows you to return two floats rather than only one value.
+This basicly as two values or a given type; x and y. This allows you to return two variables of the same type rather than only one value.
 Also has a few funtions for converting velocity to angles and speed.
-Supports basic math, like eadding, also allows to check is Points have the same value.
+Supports basic math, like adding, also allows to check if Points have the same value.
 */
+template <typename T, typename S=T,typename U=T>
 class Point{
 public:
-    float x; //!< This is the first of the the pair of floats, called x because of standard coords.
-    float y; //!< This is the second of the the pair of floats, called y because of standard coords.
-    /// The Points's constuctor.
+    /// This is the first of the the pair of coords, called x because of standard coords.
     /**
-    This creates a Point with a given x and y initialized in it.
+    This is also the type returned for funtions that return a spacific number.
     */
-    Point(float x,float y);
-    /// The Points's default constuctor.
-    /**
-    This creates a Point. However the x and y has not been set to anything yet.
-    */
-    Point();
-    /// The Points's deconstuctor.
-    /**
-    Simply removes the Point from existance.
-    */
-    ~Point();
-    /// Take's two floats and turns them into a Point.
-    /**
-    When given two floats, the first one is considered velocity and the second one is the angle. It then
-    converts them into the horizontal and virtical vector componants, vx and vy. Returns them as a Point.
-    */
-    static Point get_vel(float speed,float angle);
-    /// Take's a Point and converts it.
-    /**
-    Converts a given Point (assuming that x is speed and y and angle) and returns them as vx and vy, in a new Point.
-    */
-    static Point get_vel(Point p);
-    /// The inverse of get_vel.
-    /**
-    Take's a vx and vy float and returns it as a Point with the x being a speed and the y as an angle.
-    */
-    static Point get_ang(float vx,float vy);
-    /// The inverse of get_vel
-    /**
-    Takes a Point and returns a Point converted to vx and vy.
-    */
-    static Point get_ang(Point p);
-    /// Allows you to add Points
-    /**
-    Adds the x and y of two Points, just like adding integers.
-    */
-    Point operator+(Point param);
-    /// Allows you to subtract Points
-    /**
-    Subtracts the x and y of two Points, just like subtracting integers.
-    */
-    Point operator-(Point param);
-    /// Allows you to multiply Points
-    /**
-    Multiplies the x and y of two Points, just like multiplying integers.
-    */
-    Point operator*(Point param);
-    /// Allows you to divides Points
-    /**
-    Divides the x and y of two Points, just like dividing integers.
-    */
-    Point operator/(Point param);
-    /// Allows you to check is two Points are equal
-    /**
-    Compares the x and y of two Points, to see if the Points are equal.
-    */
-    bool operator==(Point param);
+    T x;
+    /// This is the first of the the pair of coords, called x because of standard coords.
+    S y;
+    /// This is the first of the the pair of coords, called x because of standard coords.
+    U z;
+    Point<T,S,U>();
+    Point<T,S,U>(T X);
+    Point<T,S,U>(T X,S Y);
+    Point<T,S,U>(T X,S Y,U Z);
+#ifdef SFML_SYSTEM_HPP
+    Point<T,S,U>(sf::Vector2<T> XY);
+    Point<T,S,U>(sf::Vector3<T> XYZ);
+
+    sf::Vector2<T> TwoVector();
+    sf::Vector3<T> ThreeVector();
+#ifdef SFML_GRAPHICS_HPP
+    sf::Rect<T> TwoRect(Point<T,S,U> p2);
+    static sf::Rect<T> GetRectofPoints(std::vector<Point<T,S,U> >* ps);
+#endif
+#endif
+    ~Point<T,S,U>();
+
+    Point<T,S,U> TwoAngle();
+    Point<T,S,U> TwoVelocity();
+    Point<T,S,U> GetMidPoint(Point<T,S,U> p);
+    Point<T,S,U> GetNearest(std::vector<Point<T,S,U> >* ps);
+
+    T Get_Distance(Point<T,S,U> p);
+    T Get_Angle(Point<T,S,U> p);
+    T GetMinMaxX(Point<T,S,U> p,bool min=true);
+    S GetMinMaxY(Point<T,S,U> p,bool min=true);
+    U GetMinMaxZ(Point<T,S,U> p,bool min=true);
+
+    static Point<T,S,U> GetMiddleofPoints(std::vector<Point<T,S,U> >* ps);
+    bool operator==(Point<T,S,U> param);
+    bool operator!=(Point<T,S,U> param);
+    Point<T,S,U> operator+=(Point<T,S,U> param);
+    Point<T,S,U> operator+(Point<T,S,U> param);
+    Point<T,S,U> operator-=(Point<T,S,U> param);
+    Point<T,S,U> operator-(Point<T,S,U> param);
+    Point<T,S,U> operator*=(Point<T,S,U> param);
+    Point<T,S,U> operator*(Point<T,S,U> param);
+    Point<T,S,U> operator/=(Point<T,S,U> param);
+    Point<T,S,U> operator/(Point<T,S,U> param);
 };
+
+typedef Point<int,int,int> Pointi;
+typedef Point<float,float,float> Pointf;
+
+};// namespace Ignatus
+#include "Point.inl"
 
 #endif // POINT_HPP_INCLUDED

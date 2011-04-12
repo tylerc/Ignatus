@@ -1,5 +1,7 @@
 #include "All.hpp"
 
+namespace Ignatus{
+
 State::State()
 {
     setup = false;
@@ -9,11 +11,12 @@ State::State()
 
 State::~State()
 {
-    while (Objects.size() != 0)
+    while (GameObjects.size() != 0)
     {
-        GameObject* g = Objects.back();
-        Objects.pop_back();
-        delete g;
+//        GameObject* g = GameObjects.back();
+        GameObjects.pop_back();
+//        if (g->DoNotDelete == false)
+//            delete g;
     }
 }
 
@@ -33,29 +36,17 @@ void State::SSetup()
 
 void State::Add(GameObject* g)
 {
+    g->MyState=this;
     WaitingObjects.push_back(g);
 }
-
-void State::AddEvent(Event Ev)
-{
-    Events.push_back(Ev);
-}
-
-void State::Update()
-{
-    while (WaitingObjects.size() > 0)
+void State::RemoveObject(GameObject* go_away){
+    for (std::vector<GameObject*>::iterator pos = GameObjects.begin(); pos < GameObjects.end();)
     {
-        GameObject* g = WaitingObjects.front();
-        Objects.push_back(g);
-        WaitingObjects.erase(WaitingObjects.begin());
-    }
-
-    for (std::vector<GameObject*>::iterator pos = Objects.begin(); pos < Objects.end();)
-    {
-        if ((*pos)->life <= 0)
+        if ((*pos) == go_away)
         {
+            //RemoveObject(pos);
             GameObject* g = *pos;
-            Objects.erase(pos);
+            GameObjects.erase(pos);
             for (std::vector<State::Event>::iterator pos2 = Events.begin(); pos2 < Events.end();)
             {
                 if (pos2->owner == g)
@@ -79,7 +70,75 @@ void State::Update()
             pos++;
         }
     }
+}
+void State::AddEvent(Event Ev)
+{
+    Events.push_back(Ev);
+}
 
+void State::Update(){
+    debug("State: Tick")
+    /**
+    Here we loop through all added GameObjects
+    If GameObjects have been added, we do it properly here.
+    We also set a boolean Added to true so we can sort
+     the them by depth, doing this each step is laggy and
+     causes jittery looks.
+    */
+    bool Added=false;
+    debug("State: Waiting for "<<WaitingObjects.size()<<" Objects to add")
+    while (WaitingObjects.size() > 0){
+        debug("State: Adding Objects")
+        Added=true;
+        GameObject* g = WaitingObjects.front();
+        GameObjects.push_back(g);
+        WaitingObjects.erase(WaitingObjects.begin());
+    }
+    /**
+    Sort vector based on Depth values.
+    */
+    if(Added){
+        debug("State: Sorting Objects")
+        sort(GameObjects.begin(),GameObjects.end(),Sort_GameObjects);
+    }
+    /**
+    This, err... I think it removes
+     GameObjects if their Life <= 0
+    */
+    debug("State: Death of Objects")
+    for (std::vector<GameObject*>::iterator pos = GameObjects.begin(); pos < GameObjects.end();)
+    {
+        if ((*pos)->Life <= 0)
+        {
+            GameObject* g = *pos;
+            GameObjects.erase(pos);
+            for (std::vector<State::Event>::iterator pos2 = Events.begin(); pos2 < Events.end();)
+            {
+                if (pos2->owner == g)
+                {
+                    Events.erase(pos2);
+                } else {
+                    pos2++;
+                }
+            }
+            for (std::vector<GameObject*>::iterator pos3 = CollisionObjects.begin(); pos3 < CollisionObjects.end();)
+            {
+                if ((*pos3) == g)
+                {
+                    CollisionObjects.erase(pos3);
+                } else {
+                    pos3++;
+                }
+            }
+            delete g;
+        } else {
+            pos++;
+        }
+    }
+    /**
+    Here all collision is handled for all GameObjects.
+    */
+    debug("State: Collision")
     for (unsigned int i = 0; i < CollisionObjects.size(); i++)
     {
         for (unsigned int j = i+1; j < CollisionObjects.size(); j++)
@@ -91,49 +150,65 @@ void State::Update()
             }
         }
     }
-
-    // Process events
+    /**
+    This is where we process all our events...
+    */
+    debug("State: Events")
     sf::Event Event;
-    while (_E.App->GetEvent(Event))
-    {
-        // Close window : exit
-        if (Event.Type == sf::Event::Closed)
+    while (_E.App->GetEvent(Event)){
+        /**
+        Done Playing and you hit the pretty X...
+        */
+        if (Event.Type == sf::Event::Closed){
             _E.App->Close();
-        if (Event.Type == sf::Event::KeyReleased)
-        {
-            //if (Event.Key.Code == sf::Key::Escape)
-            //    _E.App->Close();
         }
-        for (unsigned int i = 0; i < Events.size(); i++)
-        {
-            if (Event.Type == Events[i].type)
-            {
-                if (Events[i].has_key == true and Event.Key.Code == Events[i].key)
-                {
-                    Events[i].func(Event);
+        /**
+        This handles the mouse so you don't have to.
+        Use MouseX,MouseY, and Mouse_Pos for mouse location stuff.
+        */
+        if(Event.Type==sf::Event::MouseMoved){
+            Mouse_Pos=Pointf(_E.App->ConvertCoords(_E.App->GetInput().GetMouseX(), _E.App->GetInput().GetMouseY()))*_E.World_View->GetZoom();
+            Mouse_Pos=Mouse_Pos+_E.World_View->GetPosition();
+            MouseX=Mouse_Pos.x;
+            MouseY=Mouse_Pos.y;
+        }
+        /**
+        This is so our Cameras don't get messed up...
+        */
+        if(Event.Type==sf::Event::Resized){
+            _E.Screen_View->SetSize(Pointf(Event.Size.Width,Event.Size.Height));
+        }
+        for (unsigned int i = 0; i < Events.size(); i++){
+            if (Event.Type == Events[i].type){
+                if (Events[i].has_key == true and Event.Key.Code == Events[i].key){
+                    this->Ev = Event;
+                    Events[i].func();
                 } else if (Events[i].has_key == false) {
-                    Events[i].func(Event);
+                    this->Ev = Event;
+                    Events[i].func();
                 }
             }
         }
     }
-
-    for (unsigned int i = 0; i < Objects.size(); i++)
+    /**
+    Update each GameObject's UpdateMagic()
+    UpdateMagic() Calls Update()
+    Draw each GameObject in their 'camera' view.
+    */
+    debug("State: Object Updates "<<GameObjects.size()<<" ")
+    for (unsigned int i = 0; i < GameObjects.size(); i++)
     {
-        Objects[i]->UpdateMagic();
-        Objects[i]->Update();
+        debug("State: Update Magic")
+        GameObjects[i]->UpdateMagic();
+        if(GameObjects[i]->World){
+            debug("State: Changing Views")
+            _E.World_View->Activate();
+        }
+        debug("State: Drawing")
+        GameObjects[i]->Draw(_E.App);
+        debug("State: Reset View")
+        _E.Screen_View->Activate();
     }
-
-    // Clear the screen
-    _E.App->Clear(ClearColor);
-
-    for (unsigned int i = 0; i < Objects.size(); i++)
-    {
-        Objects[i]->Draw(_E.App);
-    }
-
-    // Display window contents on screen
-    _E.App->Display();
 }
 
 void State::ChangeInto()
@@ -160,4 +235,6 @@ void State::RemoveCollider(GameObject* g)
             pos3++;
         }
     }
+}
+
 }
