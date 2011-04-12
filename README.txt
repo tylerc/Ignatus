@@ -56,6 +56,7 @@ Save the example as main.cpp, and run this command:
 And you'll have a working blank window! :)
 
 For more, see the documentation at http://tylerc.github.com/Ignatus
+
 Features
 --------
 
