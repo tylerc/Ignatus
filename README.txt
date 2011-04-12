@@ -9,6 +9,9 @@ At all times, it is written with the goal in mind of being simple and
 magical. For the most part, it has been grown out of need and experience, not
 out of whims or nice-to-have's.
 
+Ignatus is hosted on github at https://github.com/tylerc/Ignatus
+Ignatus' documentation can be found at http://tylerc.github.com/Ignatus
+
 Building the Engine
 -------------------
 
@@ -52,6 +55,7 @@ Save the example as main.cpp, and run this command:
 
 And you'll have a working blank window! :)
 
+For more, see the documentation at http://tylerc.github.com/Ignatus
 Features
 --------
 
