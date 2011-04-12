@@ -39,38 +39,48 @@ void State::Add(GameObject* g)
     g->MyState=this;
     WaitingObjects.push_back(g);
 }
-void State::RemoveObject(GameObject* go_away){
-    for (std::vector<GameObject*>::iterator pos = GameObjects.begin(); pos < GameObjects.end();)
+
+void State::RemoveObject(GameObject* g){
+    RemoveObjects.push_back(g);
+}
+
+void State::FlushRemoveObjects()
+{
+    while (!RemoveObjects.empty())
     {
-        if ((*pos) == go_away)
+        GameObject* go_away = (*RemoveObjects.begin());
+        for (std::vector<GameObject*>::iterator pos = GameObjects.begin(); pos < GameObjects.end();)
         {
-            //RemoveObject(pos);
-            GameObject* g = *pos;
-            GameObjects.erase(pos);
-            for (std::vector<State::Event>::iterator pos2 = Events.begin(); pos2 < Events.end();)
+            if ((*pos) == go_away)
             {
-                if (pos2->owner == g)
+                GameObject* g = *pos;
+                GameObjects.erase(pos);
+                for (std::vector<State::Event>::iterator pos2 = Events.begin(); pos2 < Events.end();)
                 {
-                    Events.erase(pos2);
-                } else {
-                    pos2++;
+                    if (pos2->owner == g)
+                    {
+                        Events.erase(pos2);
+                    } else {
+                        pos2++;
+                    }
                 }
-            }
-            for (std::vector<GameObject*>::iterator pos3 = CollisionObjects.begin(); pos3 < CollisionObjects.end();)
-            {
-                if ((*pos3) == g)
+                for (std::vector<GameObject*>::iterator pos3 = CollisionObjects.begin(); pos3 < CollisionObjects.end();)
                 {
-                    CollisionObjects.erase(pos3);
-                } else {
-                    pos3++;
+                    if ((*pos3) == g)
+                    {
+                        CollisionObjects.erase(pos3);
+                    } else {
+                        pos3++;
+                    }
                 }
+            } else {
+                pos++;
             }
-            delete g;
-        } else {
-            pos++;
         }
+        RemoveObjects.erase(RemoveObjects.begin());
     }
 }
+
 void State::AddEvent(Event Ev)
 {
     Events.push_back(Ev);
@@ -135,6 +145,7 @@ void State::Update(){
             pos++;
         }
     }
+    FlushRemoveObjects();
     /**
     Here all collision is handled for all GameObjects.
     */

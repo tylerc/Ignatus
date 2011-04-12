@@ -11,6 +11,7 @@ public:
     std::vector<GameObject*> GameObjects;
     std::vector<GameObject*> WaitingObjects;
     std::vector<GameObject*> CollisionObjects;
+    std::vector<GameObject*> RemoveObjects;
     int MouseX,MouseY;
     Point<float> Mouse_Pos;
     /// How this game engine represents events, you won't need to worry about this struct unless you're particularly masochistic.
@@ -33,6 +34,7 @@ public:
     virtual ~State();
     void Add(GameObject* g);
     void RemoveObject(GameObject* g);
+    void FlushRemoveObjects();
     void AddEvent(Event Ev);
     virtual void Update();
     void SSetup();
