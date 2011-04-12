@@ -26,7 +26,7 @@ As with any great act, we must first set the stage. Like all other ambitious
 projects, it starts with \c main.cpp :
 
 \code
-#include <Engine/All.hpp>
+#include <Ignatus/All.hpp>
 
 int main()
 {
@@ -39,7 +39,7 @@ int main()
 \endcode
 
 Assuming the header files are included in your compiler's search path, and that
-you've linked against the engine, sfml-system, sfml-window, sfml-graphics, and
+you've linked against Ignatus, sfml-system, sfml-window, sfml-graphics, and
 sfml-audio, this will compile and produce a beautiful blank, black window! Yay!
 
 This is so simple, that an explanation almost doesn't seem worth it. But let's
