@@ -89,29 +89,6 @@ void State::AddEvent(Event Ev)
 void State::Update(){
     debug("State: Tick")
     /**
-    Here we loop through all added GameObjects
-    If GameObjects have been added, we do it properly here.
-    We also set a boolean Added to true so we can sort
-     the them by depth, doing this each step is laggy and
-     causes jittery looks.
-    */
-    bool Added=false;
-    debug("State: Waiting for "<<WaitingObjects.size()<<" Objects to add")
-    while (WaitingObjects.size() > 0){
-        debug("State: Adding Objects")
-        Added=true;
-        GameObject* g = WaitingObjects.front();
-        GameObjects.push_back(g);
-        WaitingObjects.erase(WaitingObjects.begin());
-    }
-    /**
-    Sort vector based on Depth values.
-    */
-    if(Added){
-        debug("State: Sorting Objects")
-        sort(GameObjects.begin(),GameObjects.end(),Sort_GameObjects);
-    }
-    /**
     This, err... I think it removes
      GameObjects if their Life <= 0
     */
@@ -146,6 +123,33 @@ void State::Update(){
         }
     }
     FlushRemoveObjects();
+
+    /**
+    Here we loop through all added GameObjects
+    If GameObjects have been added, we do it properly here.
+    We also set a boolean Added to true so we can sort
+     the them by depth, doing this each step is laggy and
+     causes jittery looks.
+    */
+    bool Added=false;
+    debug("State: Waiting for "<<WaitingObjects.size()<<" Objects to add")
+    while (WaitingObjects.size() > 0){
+        debug("State: Adding Objects")
+        Added=true;
+        GameObject* g = WaitingObjects.front();
+        GameObjects.push_back(g);
+        if (g->Collides)
+            CollisionObjects.push_back(g);
+        WaitingObjects.erase(WaitingObjects.begin());
+    }
+    /**
+    Sort vector based on Depth values.
+    */
+    if(Added){
+        debug("State: Sorting Objects")
+        sort(GameObjects.begin(),GameObjects.end(),Sort_GameObjects);
+    }
+
     /**
     Here all collision is handled for all GameObjects.
     */

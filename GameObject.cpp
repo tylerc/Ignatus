@@ -17,10 +17,8 @@ GameObject::GameObject(std::string file, Point<float> xy, bool collides)
     this->Life = 1;
     this->DoNotDelete = false;
     World=true;
-    _CS->Add(this);
     Collides = collides;
-    if (collides)
-        _CS->AddCollider(this);
+    _CS->Add(this);
 }
 
 GameObject::GameObject(bool collides)
@@ -35,10 +33,8 @@ GameObject::GameObject(bool collides)
     Sprite = NULL;
     Image = NULL;
     World=true;
-    _CS->Add(this);
     Collides = collides;
-    if (collides)
-        _CS->AddCollider(this);
+    _CS->Add(this);
 }
 
 GameObject::~GameObject()

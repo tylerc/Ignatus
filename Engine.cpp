@@ -74,7 +74,7 @@ void Engine::Looptastic(){
         debug("SC Update")
         CS->Update();
         debug("Engine State Update")
-        //EngineState->Update();
+        EngineState->Update();
         /**
         This is for taking screenshots and stuff...
         */
