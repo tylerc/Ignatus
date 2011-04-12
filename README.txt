@@ -12,6 +12,22 @@ out of whims or nice-to-have's.
 Ignatus is hosted on github at https://github.com/tylerc/Ignatus
 Ignatus' documentation can be found at http://tylerc.github.com/Ignatus
 
+Features
+--------
+
+* Fire and Forget object creation (they add themselves to the game, and clean
+up after themselves when they die).
+* Easy management of multiple game states.
+* Support for background music and sound effects.
+* Easy particle effects.
+* It's simple to create an object with an animated image.
+* You can create simple Polygons.
+* Support for displaying Text.
+* Collision detection, and the ability to disable it when you don't want the
+overhead associated with it.
+
+And much, much more! :)
+
 Building the Engine
 -------------------
 
@@ -56,22 +72,6 @@ Save the example as main.cpp, and run this command:
 And you'll have a working blank window! :)
 
 For more, see the documentation at http://tylerc.github.com/Ignatus
-
-Features
---------
-
-* Fire and Forget object creation (they add themselves to the game, and clean
-up after themselves when they die).
-* Easy management of multiple game states.
-* Support for background music and sound effects.
-* Easy particle effects.
-* It's simple to create an object with an animated image.
-* You can create simple Polygons.
-* Support for displaying Text.
-* Collision detection, and the ability to disable it when you don't want the
-overhead associated with it.
-
-And much, much more! :)
 
 License
 -------
