@@ -5,7 +5,7 @@
 Let's face it, you'd probably rather be having sex than reading this tutorial.
 So we'll try to make this as fun, short, and informative as possible so you can
 build the game, make the money, impress the girl because you can have fun and
-make ridiculous sums of cash at the same time to feed her shoe fetish, chocolate
+make ridiculous sums of cash and at the same time to feed her shoe fetish, chocolate
 lust, and take her luxurious vaccations to your beach house in the Carribean. A
 beach house, in which, finally, after all your hard work, you get to have sex.
 Glorious sex, the stuff dreams aspire to be, sex that both porn directors and
@@ -26,8 +26,7 @@ As with any great act, we must first set the stage. Like all other ambitious
 projects, it starts with \c main.cpp :
 
 \code
-#include <Engine/util.hpp>
-#include <Engine/Engine.hpp>
+#include <Engine/All.hpp>
 
 int main()
 {

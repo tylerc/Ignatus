@@ -9,6 +9,7 @@
     * Add Text Input
     * Add SlideBars
     * Make ready to publicly distribute
+    * Remove Particles
 
     THEORY
 
