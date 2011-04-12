@@ -2,13 +2,13 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Engine" />
+		<Option title="Ignatus" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Option virtualFolders="Templates/;" />
 		<Build>
 			<Target title="Debug">
-				<Option output="libEngine" prefix_auto="1" extension_auto="1" />
+				<Option output="libIgnatus" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug/" />
 				<Option type="2" />
@@ -20,7 +20,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="libEngine" prefix_auto="1" extension_auto="1" />
+				<Option output="libIgnatus" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
 				<Option type="2" />
