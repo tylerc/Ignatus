@@ -16,7 +16,7 @@ private:
 public:
     State* MyState;
     Engine* MyEngine;
-    bool Collides; //!< Controls whether or not this GameObject can collide with other GameObjects.
+    bool Collides; //!< Controls whether or not this GameObject can collide with other GameObjects, setting this is only meaningful inside a GameObject's constructor; outside of the constructor, call SetCollides.
     Pointf Position; //!< What the hell do you think this is? (it's a GameObject's x and y position, for the heathans).
     Pointf Velocity; //!< How much this GameObject will be moving each update.
     Pointi Dimensions; //!< The size of your pretty little GameObject.
@@ -106,6 +106,8 @@ public:
     /**
     If the flag is changed to true it will call the Collision function.
     If set to false it will no longer call the Collision function.
+
+    Do not call this function inside of the constructor, set the Collision variable.
     */
     void SetCollides(bool collides);
     /// Adds a given string to the list of names for a GameObject.

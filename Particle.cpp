@@ -7,7 +7,7 @@ int Particle::Part_Count=0;
 Particle::Particle(std::string img,Point<float> xy,Point<int> dim,int fps,Point<float> vel,sf::Color stint,sf::Color etint,float fric,float turn,float wiggle,bool loop,bool World):AniObject(img,xy,dim,fps,loop){
     Particle::Part_Count++;
     AddName("Particle");
-    SetCollides(false);
+    Collides = false;
     Etint=etint;
     Stint=stint;
     Mtint=sf::Color((etint.r+stint.r)/2,(etint.g+stint.g)/2,(etint.b+stint.b)/2,(etint.a+stint.a)/2);
@@ -25,7 +25,7 @@ Particle::Particle(std::string img,Point<float> xy,Point<int> dim,int fps,Point<
 
 Particle::Particle(Particle::DNA dna):AniObject(dna.Img,dna.Position,dna.Dimensions,dna.FPS,dna.Loop){
     Particle::Part_Count++;
-    SetCollides(false);
+    Collides = false;
     AddName("Particle");
     Etint=dna.Etint;
     Stint=dna.Stint;

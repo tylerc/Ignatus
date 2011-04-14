@@ -8,7 +8,7 @@ Particles::Particles(std::string img,Point<float> xy,Point<int> dim,int fps,bool
     this->fric=fric;
     this->wiggle=wiggle;
     this->turn=turn;
-    SetCollides(false);
+    Collides = false;
     AddName("Particle");
     Sprite->SetCenter(dim.x/2,dim.y/2);
     Sprite->SetColor(tint);
@@ -23,7 +23,7 @@ Particles::Particles(Part_DNA dna):AniObject(dna.img,dna.xy,dna.dim,dna.fps,dna.
     this->fric=dna.fric;
     this->wiggle=dna.wiggle;
     this->turn=dna.turn;
-    SetCollides(false);
+    Collides = false;
     Sprite->SetCenter(dna.dim.x/2,dna.dim.y/2);
     Sprite->SetColor(dna.tint);
     this->World=dna.world;
